@@ -35,9 +35,10 @@ sphere_marker.color.r = 0.0
 sphere_marker.color.g = 1.0
 sphere_marker.color.b = 0.0
 
+marker_array = MarkerArray()
 other_sphere_marker = Marker()
 other_sphere_marker.header.frame_id = "base_frame"
-other_sphere_marker.ns = "Sphere" # unique ID
+other_sphere_marker.ns = "Sphere1" # unique ID
 other_sphere_marker.type = Marker().SPHERE
 other_sphere_marker.action = Marker().ADD
 other_sphere_marker.lifetime = rospy.Duration(0.0)
@@ -55,10 +56,11 @@ other_sphere_marker.color.a = 1.0
 other_sphere_marker.color.r = 1.0
 other_sphere_marker.color.g = 1.0
 other_sphere_marker.color.b = 0.0
+marker_array.append(other_sphere_marker)
 
 yet_another_sphere_marker = Marker()
 yet_another_sphere_marker.header.frame_id = "base_frame"
-yet_another_sphere_marker.ns = "Sphere" # unique ID
+yet_another_sphere_marker.ns = "Sphere2" # unique ID
 yet_another_sphere_marker.type = Marker().SPHERE
 yet_another_sphere_marker.action = Marker().ADD
 yet_another_sphere_marker.lifetime = rospy.Duration(0.0)
@@ -69,19 +71,21 @@ yet_another_sphere_marker.scale.x = 1.2
 yet_another_sphere_marker.scale.y = 1.2
 yet_another_sphere_marker.scale.z = 1.2
 yet_another_sphere_marker.pose.orientation.x = 0.0
-yet_another_sphere_marker.pose.orientation.y = 0.0
+yet_another_sphere_marker.pose.orientation.y = 0.0 
 yet_another_sphere_marker.pose.orientation.z = 0.0
 yet_another_sphere_marker.pose.orientation.w = 1.0
 yet_another_sphere_marker.color.a = 1.0
-yet_another_sphere_marker.color.r = 1.0
+yet_another_sphere_marker.color.r = 0.0
 yet_another_sphere_marker.color.g = 1.0
-yet_another_sphere_marker.color.b = 0.0
+yet_another_sphere_marker.color.b = 1.0
+marker_array.append(other_sphere_marker)
 
 pub_rviz_marker = rospy.Publisher("visualization_marker", Marker, queue_size=10)
 i = 0
-pub_rviz_marker_array = rospy.Publisher("visualization_marker", Marker, queue_size=10)
+pub_rviz_marker_array = rospy.Publisher("visualization_marker_array", Marker, queue_size=10)
 while(i<100):
     pub_rviz_marker.publish(sphere_marker)
+    pub_rviz_marker_array.publish(marker_array)
     print("running")
     rospy.sleep(0.5)
     i += 1
