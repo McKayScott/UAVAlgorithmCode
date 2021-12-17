@@ -42,20 +42,20 @@ class ros_marker_organizer:
         self.pub_rviz_marker.publish(sphere_marker)
 
     def publish_path(self, x_vals, y_vals, z_vals):
+        marker_array = MarkerArray()
         for i in range(len(x_vals)):
-            marker_array = MarkerArray()
             other_sphere_marker = Marker()
             other_sphere_marker.header.frame_id = "base_frame"
             other_sphere_marker.ns = "Sphere" + str(i) # unique ID
             other_sphere_marker.type = Marker().SPHERE
             other_sphere_marker.action = Marker().ADD
             other_sphere_marker.lifetime = rospy.Duration(0.0)
-            other_sphere_marker.pose.position.x = -1
-            other_sphere_marker.pose.position.y = 0
-            other_sphere_marker.pose.position.z = 0
-            other_sphere_marker.scale.x = x_vals[i]
-            other_sphere_marker.scale.y = y_vals[i]
-            other_sphere_marker.scale.z = z_vals[i]
+            other_sphere_marker.scale.x = 0.5
+            other_sphere_marker.scale.y = 0.5
+            other_sphere_marker.scale.position.z = 0.5
+            other_sphere_marker.pose.position.x = x_vals[i]
+            other_sphere_marker.pose.position.y = y_vals[i]
+            other_sphere_marker.pose.position.z = z_vals[i]
             other_sphere_marker.pose.orientation.x = 0.0
             other_sphere_marker.pose.orientation.y = 0.0
             other_sphere_marker.pose.orientation.z = 0.0
