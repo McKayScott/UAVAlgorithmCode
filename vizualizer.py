@@ -46,7 +46,7 @@ class ros_marker_organizer:
             marker_array = MarkerArray()
             other_sphere_marker = Marker()
             other_sphere_marker.header.frame_id = "base_frame"
-            other_sphere_marker.ns = "Sphere" + i # unique ID
+            other_sphere_marker.ns = "Sphere" + str(i) # unique ID
             other_sphere_marker.type = Marker().SPHERE
             other_sphere_marker.action = Marker().ADD
             other_sphere_marker.lifetime = rospy.Duration(0.0)
