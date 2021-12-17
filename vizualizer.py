@@ -12,83 +12,76 @@ from rviz_tools_for_me import *
 from visualization_msgs.msg import Marker, MarkerArray
 
 # Initialize the ROS Node
-rospy.init_node('test', anonymous=False, log_level=rospy.INFO, disable_signals=False)
+class ros_marker_organizer:
+    def __init__(self):
+        rospy.init_node('test', anonymous=False, log_level=rospy.INFO, disable_signals=False)
+        self.pub_rviz_marker = rospy.Publisher("visualization_marker", Marker, queue_size=10)
+        self.pub_rviz_marker_array = rospy.Publisher("visualization_marker_array", MarkerArray, queue_size=10)
 
-sphere_marker = Marker()
-sphere_marker.header.frame_id = "base_frame"
-sphere_marker.ns = "Sphere" # unique ID
-sphere_marker.type = Marker().SPHERE
-sphere_marker.action = Marker().ADD
-sphere_marker.lifetime = rospy.Duration(0.0)
-sphere_marker.pose.position.x = 0
-sphere_marker.pose.position.y = 0
-sphere_marker.pose.position.z = 0
-sphere_marker.scale.x = 1.0
-sphere_marker.scale.y = 1.0
-sphere_marker.scale.z = 1.0
-sphere_marker.pose.orientation.x = 0.0
-sphere_marker.pose.orientation.y = 0.0
-sphere_marker.pose.orientation.z = 0.0
-sphere_marker.pose.orientation.w = 1.0
-sphere_marker.color.a = 1.0
-sphere_marker.color.r = 0.0
-sphere_marker.color.g = 1.0
-sphere_marker.color.b = 0.0
+    def publish_drone(self, x_val, y_val, z_val):
+        sphere_marker = Marker()
+        sphere_marker.header.frame_id = "base_frame"
+        sphere_marker.ns = "Sphere" # unique ID
+        sphere_marker.type = Marker().SPHERE
+        sphere_marker.action = Marker().ADD
+        sphere_marker.lifetime = rospy.Duration(0.0)
+        sphere_marker.pose.position.x = x_val
+        sphere_marker.pose.position.y = y_val
+        sphere_marker.pose.position.z = z_val
+        sphere_marker.scale.x = 1.0
+        sphere_marker.scale.y = 1.0
+        sphere_marker.scale.z = 1.0
+        sphere_marker.pose.orientation.x = 0.0
+        sphere_marker.pose.orientation.y = 0.0
+        sphere_marker.pose.orientation.z = 0.0
+        sphere_marker.pose.orientation.w = 1.0
+        sphere_marker.color.a = 1.0
+        sphere_marker.color.r = 0.0
+        sphere_marker.color.g = 1.0
+        sphere_marker.color.b = 0.0
+        self.pub_rviz_marker.publish(sphere_marker)
 
-marker_array = MarkerArray()
-other_sphere_marker = Marker()
-other_sphere_marker.header.frame_id = "base_frame"
-other_sphere_marker.ns = "Sphere1" # unique ID
-other_sphere_marker.type = Marker().SPHERE
-other_sphere_marker.action = Marker().ADD
-other_sphere_marker.lifetime = rospy.Duration(0.0)
-other_sphere_marker.pose.position.x = -1
-other_sphere_marker.pose.position.y = 0
-other_sphere_marker.pose.position.z = 0
-other_sphere_marker.scale.x = 0.2
-other_sphere_marker.scale.y = 0.2
-other_sphere_marker.scale.z = 0.2
-other_sphere_marker.pose.orientation.x = 0.0
-other_sphere_marker.pose.orientation.y = 0.0
-other_sphere_marker.pose.orientation.z = 0.0
-other_sphere_marker.pose.orientation.w = 1.0
-other_sphere_marker.color.a = 1.0
-other_sphere_marker.color.r = 1.0
-other_sphere_marker.color.g = 1.0
-other_sphere_marker.color.b = 0.0
-marker_array.markers.append(other_sphere_marker)
+    def publish_path(self, x_vals, y_vals, z_vals):
+        for i in range(len(x_vals)):
+            marker_array = MarkerArray()
+            other_sphere_marker = Marker()
+            other_sphere_marker.header.frame_id = "base_frame"
+            other_sphere_marker.ns = "Sphere" + i # unique ID
+            other_sphere_marker.type = Marker().SPHERE
+            other_sphere_marker.action = Marker().ADD
+            other_sphere_marker.lifetime = rospy.Duration(0.0)
+            other_sphere_marker.pose.position.x = -1
+            other_sphere_marker.pose.position.y = 0
+            other_sphere_marker.pose.position.z = 0
+            other_sphere_marker.scale.x = x_vals[i]
+            other_sphere_marker.scale.y = y_vals[i]
+            other_sphere_marker.scale.z = z_vals[i]
+            other_sphere_marker.pose.orientation.x = 0.0
+            other_sphere_marker.pose.orientation.y = 0.0
+            other_sphere_marker.pose.orientation.z = 0.0
+            other_sphere_marker.pose.orientation.w = 1.0
+            other_sphere_marker.color.a = 1.0
+            other_sphere_marker.color.r = 1.0
+            other_sphere_marker.color.g = 1.0
+            other_sphere_marker.color.b = 0.0
+            marker_array.markers.append(other_sphere_marker)
+        self.pub_rviz_marker_array.publish(marker_array)
 
-yet_another_sphere_marker = Marker()
-yet_another_sphere_marker.header.frame_id = "base_frame"
-yet_another_sphere_marker.ns = "Sphere2" # unique ID
-yet_another_sphere_marker.type = Marker().SPHERE
-yet_another_sphere_marker.action = Marker().ADD
-yet_another_sphere_marker.lifetime = rospy.Duration(0.0)
-yet_another_sphere_marker.pose.position.x = 1
-yet_another_sphere_marker.pose.position.y = 0
-yet_another_sphere_marker.pose.position.z = 0
-yet_another_sphere_marker.scale.x = 0.2
-yet_another_sphere_marker.scale.y = 0.2
-yet_another_sphere_marker.scale.z = 0.2
-yet_another_sphere_marker.pose.orientation.x = 0.0
-yet_another_sphere_marker.pose.orientation.y = 0.0 
-yet_another_sphere_marker.pose.orientation.z = 0.0
-yet_another_sphere_marker.pose.orientation.w = 1.0
-yet_another_sphere_marker.color.a = 1.0
-yet_another_sphere_marker.color.r = 0.0
-yet_another_sphere_marker.color.g = 1.0
-yet_another_sphere_marker.color.b = 1.0
-marker_array.markers.append(yet_another_sphere_marker)
-
-pub_rviz_marker = rospy.Publisher("visualization_marker", Marker, queue_size=10)
-i = 0
-pub_rviz_marker_array = rospy.Publisher("visualization_marker_array", MarkerArray, queue_size=10)
-while(i<100):
-    pub_rviz_marker.publish(sphere_marker)
-    pub_rviz_marker_array.publish(marker_array)
-    print("running")
-    rospy.sleep(0.5)
-    i += 1
+if __name__ == "__main__":
+    new_pubber = ros_marker_organizer()
+    i = 0
+    xvals = []
+    yvals = []
+    zvals = []
+    while(i<100):
+        #print("running")
+        new_pubber.publish_drone(i-50,0,0)
+        xvals.append(i-50)
+        yvals.append(0)
+        zvals.append(0)
+        new_pubber.publish_path(xvals,yvals,zvals)
+        rospy.sleep(0.5)
+        i += 1
 
     
 
