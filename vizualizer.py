@@ -52,7 +52,7 @@ class ros_marker_organizer:
             other_sphere_marker.lifetime = rospy.Duration(0.0)
             other_sphere_marker.scale.x = 0.5
             other_sphere_marker.scale.y = 0.5
-            other_sphere_marker.scale.position.z = 0.5
+            other_sphere_marker.scale.z = 0.5
             other_sphere_marker.pose.position.x = x_vals[i]
             other_sphere_marker.pose.position.y = y_vals[i]
             other_sphere_marker.pose.position.z = z_vals[i]
