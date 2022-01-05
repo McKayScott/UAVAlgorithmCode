@@ -15,6 +15,7 @@ import time
 import random
 #import threading
 import multiprocessing
+import os
 
 
 #plt.style.use('fivethirtyeight') 
@@ -180,10 +181,17 @@ def main():
     #ani = FuncAnimation(plt.gcf(), grid_developer.animate, interval=5000)
     i = 0
     while(1):
-        drone_thread = multiprocessing.Process(target=grid_developer.new_path(),args=())  
-        drone_thread.start()
-        grid_developer.new_path()
-        time.sleep(4)
+        grid_developer.iterating_port += 1
+        pid = os.fork()
+        if pid > 0:
+            print("parent exits loop")
+            time.sleep(5)
+        else:
+            grid_developer.new_path()
+        # drone_thread = multiprocessing.Process(target=grid_developer.new_path(),args=())  
+        # drone_thread.start()
+        # grid_developer.new_path()
+        
 
 #if __name__ == "__main__":
 main()

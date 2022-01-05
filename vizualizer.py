@@ -14,7 +14,7 @@ from visualization_msgs.msg import Marker, MarkerArray
 # Initialize the ROS Node
 class ros_marker_organizer:
     def __init__(self):
-        rospy.init_node('test', anonymous=False, log_level=rospy.INFO, disable_signals=False)
+        #rospy.init_node('test', anonymous=False, log_level=rospy.INFO, disable_signals=False)
         self.pub_rviz_marker = rospy.Publisher("visualization_marker", Marker, queue_size=10)
         self.pub_rviz_marker_array = rospy.Publisher("visualization_marker_array", MarkerArray, queue_size=10)
 
