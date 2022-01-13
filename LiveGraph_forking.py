@@ -9,7 +9,7 @@ from GridDeveloper import *
 from NodeClass import *
 from UAV_sim import *
 # TODO UNCOMMENT FOR ROS PUBLICATIONS
-# from vizualizer import *
+#from vizualizer import *
 import math
 import time
 import random
@@ -25,8 +25,7 @@ import os
 class graphing_grids: 
     def __init__(self):
     
-        self.ax = plt.axes(projection='3d')
-
+        #self.ax = plt.axes(projection='3d')
         self.namafile = 'Grid.csv'
         self.header1 = "x_value"
         self.header2 = "y_value"
@@ -54,14 +53,14 @@ class graphing_grids:
                         x.append(point[0])
                         y.append(point[1])
                         z.append(point[2])
-                    if color == 0:
-                        self.ax.plot3D(x, y, z, 'red')
-                    elif color == 1:
-                        self.ax.plot3D(x, y, z, 'blue')
-                    elif color == 2:
-                        self.ax.plot3D(x, y, z, 'green')
-                    elif color == 3:
-                        self.ax.plot3D(x, y, z, 'black')
+                    # if color == 0:
+                    #     self.ax.plot3D(x, y, z, 'red')
+                    # elif color == 1:
+                    #     self.ax.plot3D(x, y, z, 'blue')
+                    # elif color == 2:
+                    #     self.ax.plot3D(x, y, z, 'green')
+                    # elif color == 3:
+                    #     self.ax.plot3D(x, y, z, 'black')
                 color += 1
 
     def findDistance(self, node1, node2):
@@ -132,14 +131,14 @@ class graphing_grids:
             #print(currentNode.uniqueIdentifier)
         return x, y, z, occupied_unique_idents
 
-    def send_path_to_drone(self,x,y,z):
-        #TODO LOCK THIS ITERATING PORT
-        #TODO THREAD IS NOT RUNNING IN BACKGROUND, PROGRAM IS STILL WAITING FOR THE DRONE TO FINISH IT'S PATH BEFORE MOVING ON.
-        new_drone = UAV_sim(x, y, z, 10, self.iterating_port)
-        drone_thread = multiprocessing.Process(target=new_drone.follow_path(),args=())
-        #UAV_sim(x, y, z, 5, self.iterating_port).follow_path()
-        self.iterating_port += 1    
-        drone_thread.start()
+    # def send_path_to_drone(self,x,y,z):
+    #     #TODO LOCK THIS ITERATING PORT
+    #     #TODO THREAD IS NOT RUNNING IN BACKGROUND, PROGRAM IS STILL WAITING FOR THE DRONE TO FINISH IT'S PATH BEFORE MOVING ON.
+    #     new_drone = UAV_sim(x, y, z, 10, self.iterating_port)
+    #     drone_thread = multiprocessing.Process(target=new_drone.follow_path(),args=())
+    #     #UAV_sim(x, y, z, 5, self.iterating_port).follow_path()
+    #     self.iterating_port += 1    
+    #     drone_thread.start()
 
     def new_path(self): #previously animate
         #data = pd.read_csv('Grid.csv')
@@ -151,9 +150,10 @@ class graphing_grids:
         occupied = []
         start_time = time.time()
         x, y, z, occupied = self.getPath(0, random.randint(0, self.matrixPoints - 1), random.randint(0, self.matrixPoints - 1), 0, random.randint(0, self.matrixPoints - 1), random.randint(0, self.matrixPoints - 1), occupied)
-        self.ax.plot3D(x, y, z, 'purple')
-
-        #self.send_path_to_drone(x,y,z)
+        #self.ax.plot3D(x, y, z, 'purple')
+        
+        #self.ros_pubs = ros_marker_organizer(69)
+        #self.ros_pubs.publish_path(x,y,z)
         new_drone = UAV_sim(x, y, z, 10, self.iterating_port).follow_path()
         #drone_thread = multiprocessing.Process(target=new_drone.follow_path(),args=())  
         #drone_thread.start()
@@ -184,17 +184,18 @@ def main():
         grid_developer.iterating_port += 1
         pid = os.fork()
         if pid > 0:
-            print("parent exits loop")
+            print("parent goes to sleep")
             time.sleep(5)
         else:
             grid_developer.new_path()
+            break
         # drone_thread = multiprocessing.Process(target=grid_developer.new_path(),args=())  
         # drone_thread.start()
         # grid_developer.new_path()
         
 
-#if __name__ == "__main__":
-main()
+if __name__ == "__main__":
+    main()
     # grid_developer = graphing_grids()
     # #ani = FuncAnimation(plt.gcf(), grid_developer.animate, interval=5000)
     # while(1):

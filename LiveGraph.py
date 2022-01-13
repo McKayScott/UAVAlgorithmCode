@@ -69,10 +69,10 @@ class graphing_grids:
 
     def getPath(self, sourcex, sourcey, sourcez, goalx, goaly, goalz, occupied_unique_idents):
         Grid, NodeGrid = self.G.developGrid(self.matrixPoints)
-        sourceNode = NodeGrid[sourcex][sourcey][sourcez]
+        sourceNode = NodeGrid[sourcez][sourcey][sourcex]
         sourceNode.score = 0
         #goalNode = NodeGrid[0][matrixPoints - 1][matrixPoints - 1]
-        goalNode = NodeGrid[goalx][goaly][goalz]
+        goalNode = NodeGrid[goalz][goaly][goalx]
         #Find the best Route
         currentNode = sourceNode
         q = queue.PriorityQueue()
@@ -114,7 +114,10 @@ class graphing_grids:
                                 nNode.addPrevNode(currentNode.uniqueIdentifier)
                 i += 1
             justVisited = currentNode
+        if goalNode.parentNode == None:
+            return [],[],[],[]
         currentNode = goalNode
+        occupied_unique_idents.append(currentNode.uniqueIdentifier)
         x = []
         y = []
         z = []
@@ -123,8 +126,8 @@ class graphing_grids:
         z.append(goalNode.z_val)
         #print('source node:' + sourceNode.uniqueIdentifier)
         while(currentNode.uniqueIdentifier != sourceNode.uniqueIdentifier):
-            occupied_unique_idents.append(currentNode.uniqueIdentifier)
             currentNode = currentNode.getParent()
+            occupied_unique_idents.append(currentNode.uniqueIdentifier)
             x.append(currentNode.x_val)
             y.append(currentNode.y_val)
             z.append(currentNode.z_val)
@@ -175,7 +178,7 @@ class graphing_grids:
     #     p = multiprocessing.Process(target=self.new_path, args=())
     #     p.start()
 
-def main():
+def new_main():
     grid_developer = graphing_grids()
     #ani = FuncAnimation(plt.gcf(), grid_developer.animate, interval=5000)
     i = 0
@@ -186,7 +189,7 @@ def main():
         time.sleep(4)
 
 #if __name__ == "__main__":
-main()
+    # new_main()
     # grid_developer = graphing_grids()
     # #ani = FuncAnimation(plt.gcf(), grid_developer.animate, interval=5000)
     # while(1):
