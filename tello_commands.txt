@@ -1,0 +1,17 @@
+command
+takeoff
+delay 2
+cw 90
+delay 2
+ccw 180
+delay 2
+flip f 
+delay 2
+flip b 
+delay 2
+cw 90
+delay 2
+flip b
+flip f
+delay 2
+land
